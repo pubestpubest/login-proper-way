@@ -1,62 +1,58 @@
 "use client";
-import {
-  AppShell,
-  Burger,
-  Fieldset,
-  Group,
-  Skeleton,
-  TextInput,
-} from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
+import { Box, Button, Center, Fieldset, TextInput, Title } from "@mantine/core";
+import { FormEvent, useState } from "react";
 
 export default function Home() {
-  const [opened, { toggle }] = useDisclosure();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log("username:" + username + "\npassword:" + password);
+  };
 
   return (
-    <div>
-      <AppShell
-        header={{ height: 60 }}
-        navbar={{
-          width: 300,
-          breakpoint: "sm",
-          collapsed: { mobile: !opened },
-        }}
-        padding="md"
+    <Center w="100%" h="100vh" bg="var(--mantine-color-gray-light)">
+      <Box
+        w={300}
+        mx="auto"
+        bg="red.3"
+        p={"xl"}
+        style={{ "--radius": "0.5rem", borderRadius: "var(--radius)" }}
       >
-        <AppShell.Header>
-          <Group h="100%" px="md">
-            <Burger
-              opened={opened}
-              onClick={toggle}
-              hiddenFrom="sm"
-              size="sm"
+        <Title order={1} style={{ justifyContent: "center" }} mb="lg">
+          Login
+        </Title>
+        <form onSubmit={handleSubmit}>
+          <Fieldset variant="unstyled" radius="xl">
+            <TextInput
+              required
+              label="Username"
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
             />
-            LOGIN
-          </Group>
-        </AppShell.Header>
-        <AppShell.Navbar p="md">
-          Navbar
-          {Array(5)
-            .fill("page")
-            .map((page, index) => (
-              <Skeleton
-                key={index}
-                h={28}
-                mt="sm"
-                animate={true}
-                visible={true}
-              >
-                {page}
-              </Skeleton>
-            ))}
-        </AppShell.Navbar>
-        <AppShell.Main>
-          <Fieldset legend="Login" variant="unstyled" radius="xl">
-            <TextInput label="Username" placeholder="Username" />
-            <TextInput label="Password" placeholder="Password" mt="md" />
+            <TextInput
+              label="Password"
+              placeholder="Password"
+              mt="md"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <Button
+              type={"submit"}
+              mt={"lg"}
+              fullWidth
+              variant="gradient"
+              gradient={{ from: "red", to: "grape", deg: 140 }}
+            >
+              Login
+            </Button>
           </Fieldset>
-        </AppShell.Main>
-      </AppShell>
-    </div>
+        </form>
+      </Box>
+    </Center>
   );
 }
