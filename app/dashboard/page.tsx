@@ -1,5 +1,14 @@
-import axios from "axios";
+"use client";
+import { useUser } from "./layout";
 
 export default function dashboard() {
-  return <div>Dashboard</div>;
+  const user = useUser();
+  if (!user) return null;
+  const { username, role } = user;
+  return (
+    <div>
+      <h1>Dashboard</h1>
+      {user ? `Welcome, ${username}, ${role}!` : "Loading user..."}
+    </div>
+  );
 }

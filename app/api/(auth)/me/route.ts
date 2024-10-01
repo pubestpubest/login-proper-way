@@ -1,7 +1,11 @@
-import { stat } from "fs";
-import { verify } from "jsonwebtoken";
+import { JwtPayload, verify } from "jsonwebtoken";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
+
+interface User extends JwtPayload {
+  username: string;
+  role: string;
+}
 
 export async function GET() {
   const cookie = cookies();
@@ -17,9 +21,11 @@ export async function GET() {
   const { value } = token;
   const secret = process.env.JWT_SECRET || "";
   try {
-    verify(value, secret);
+    const user = verify(value, secret) as User;
+    const { username, role } = user;
     const response = {
-      user: "Admin user",
+      username,
+      role,
     };
     return new Response(JSON.stringify(response), { status: 200 });
   } catch (error) {

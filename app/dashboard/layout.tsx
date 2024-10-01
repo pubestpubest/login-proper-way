@@ -1,12 +1,18 @@
 "use client";
 import axios, { AxiosError } from "axios";
-import { useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 interface UserInterafce {
-  user: string | null;
+  user: {
+    username: string;
+    role: string;
+  } | null;
   error: AxiosError | null;
 }
+
+const UserContext = createContext<UserInterafce["user"]>(null);
+export const useUser = () => useContext(UserContext);
 
 export default function DashboardLayout({
   children,
@@ -14,6 +20,7 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [userData, setUserData] = useState<UserInterafce["user"]>(null);
   const router = useRouter();
   useEffect(() => {
     (async () => {
@@ -22,6 +29,7 @@ export default function DashboardLayout({
         router.push("/");
         return;
       }
+      setUserData(user);
       setIsLoading(false);
     })();
   }, [router]);
@@ -29,7 +37,12 @@ export default function DashboardLayout({
   if (isLoading) {
     return <p>Loading...</p>;
   }
-  return <main>{children}</main>;
+
+  return (
+    <UserContext.Provider value={userData}>
+      <main>{children}</main>
+    </UserContext.Provider>
+  );
 }
 
 async function getUser(): Promise<UserInterafce> {
