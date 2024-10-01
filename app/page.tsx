@@ -1,14 +1,23 @@
 "use client";
 import { Box, Button, Center, Fieldset, TextInput, Title } from "@mantine/core";
+import axios, { AxiosError } from "axios";
 import { FormEvent, useState } from "react";
 
 export default function Home() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("username:" + username + "\npassword:" + password);
+    const payload = { username, password };
+    try {
+      const { data } = await axios.post("/api/login", payload);
+      alert(JSON.stringify(data));
+    } catch (e) {
+      const error = e as AxiosError;
+      alert(error.message);
+    }
   };
 
   return (
