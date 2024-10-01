@@ -2,8 +2,10 @@
 import { Box, Button, Center, Fieldset, TextInput, Title } from "@mantine/core";
 import axios, { AxiosError } from "axios";
 import { FormEvent, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -14,6 +16,7 @@ export default function Home() {
     try {
       const { data } = await axios.post("/api/login", payload);
       alert(JSON.stringify(data));
+      router.push("/dashboard");
     } catch (e) {
       const error = e as AxiosError;
       alert(error.message);
