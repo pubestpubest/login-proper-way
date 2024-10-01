@@ -12,7 +12,7 @@ interface UserInterafce {
 }
 
 const UserContext = createContext<UserInterafce["user"]>(null);
-export const useUser = () => useContext(UserContext);
+export const UseUser = () => useContext(UserContext);
 
 export default function DashboardLayout({
   children,

@@ -1,8 +1,8 @@
 "use client";
-import { useUser } from "./layout";
+import { UseUser } from "./layout";
 
 export default function dashboard() {
-  const user = useUser();
+  const user = UseUser();
   if (!user) return null;
   const { username, role } = user;
   return (
