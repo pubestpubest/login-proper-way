@@ -1,5 +1,5 @@
 "use client";
-import { UseUser } from "./layout";
+import { UseUser } from "./userContext";
 
 export default function dashboard() {
   const user = UseUser();
